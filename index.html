@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deepak Pal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Deepak Pal — Senior iOS Engineer. Swift 6, SwiftUI, banking-grade security. Open-source Swift packages for navigation, Bluetooth, HealthKit and app security.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an engineer's spec sheet — hero with live Swift code, case-study ledger, engineering standards, then proof (code tabs, MASVS matrix). */
+:root {
+  --paper: #eef1f4;
+  --sheet: #f8fafb;
+  --ink: #12202b;
+  --muted: #566573;
+  --rule: #cfd6dd;
+  --brass: #9a6412;
+  --brass-soft: #f1e4cc;
+  --steel: #2c4a63;
+  --code-bg: #14212c;
+  --code-fg: #dfe6ec;
+  --c-kw: #f08a7e;
+  --c-ty: #8fc7f0;
+  --c-str: #e8c27a;
+  --c-cm: #7d8c99;
+  --c-fn: #b9d98c;
+  --font-display: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --measure: 64ch;
+  --wrap: 1120px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0d1620; --sheet: #121f2b; --ink: #e3e8ee; --muted: #94a3b2;
+    --rule: #263646; --brass: #e2ab52; --brass-soft: #2e2416; --steel: #8fb4d4;
+    --code-bg: #08111a; --code-fg: #dfe6ec;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0d1620; --sheet: #121f2b; --ink: #e3e8ee; --muted: #94a3b2;
+  --rule: #263646; --brass: #e2ab52; --brass-soft: #2e2416; --steel: #8fb4d4;
+  --code-bg: #08111a; --code-fg: #dfe6ec;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 16px/1.6 var(--font-body); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+a:hover { color: var(--brass); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.label { font: 500 12px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+
+/* Top bar */
+.top { border-bottom: 1px solid var(--rule); }
+.top .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; padding-block: 16px; }
+.top nav { display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 14px; }
+.top nav a { text-decoration: none; color: var(--muted); }
+.top nav a:hover { color: var(--ink); }
+.sig { font: 600 15px/1 var(--font-display); }
+.avail { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.avail::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #2f9e62; box-shadow: 0 0 0 3px color-mix(in srgb, #2f9e62 25%, transparent); }
+
+/* Hero */
+.hero .wrap { padding-block: 56px 48px; display: grid; gap: 40px; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: center; }
+.hero h1 { font-size: clamp(44px, 7.4vw, 84px); line-height: .95; font-weight: 700; letter-spacing: -.02em; margin-top: 14px; }
+.hero .role { margin: 16px 0 0; font: 600 clamp(19px, 2.4vw, 24px)/1.3 var(--font-display); color: var(--steel); }
+.hero p.lede { margin: 18px 0 0; max-width: 56ch; font-size: 17.5px; }
+.platforms { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 22px; }
+.platforms span { font: 500 12px/1 var(--font-mono); padding: 6px 9px; border: 1px solid var(--rule); border-radius: 2px; color: var(--steel); background: var(--sheet); }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; font: 600 15px/1 var(--font-body); text-decoration: none; border: 1.5px solid var(--ink); border-radius: 3px; }
+button.btn { background: transparent; color: var(--ink); cursor: pointer; user-select: text; }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.primary:hover { background: var(--brass); border-color: var(--brass); color: var(--paper); }
+.btn:hover { color: var(--brass); border-color: var(--brass); }
+
+/* Code window */
+.code { background: var(--code-bg); color: var(--code-fg); border-radius: 6px; overflow: hidden; min-width: 0; box-shadow: 0 18px 40px -24px rgba(10, 20, 30, .55); }
+.code .bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.08); font: 500 12px/1 var(--font-mono); color: var(--c-cm); }
+.code .bar i { width: 10px; height: 10px; border-radius: 50%; background: #3a4855; display: inline-block; }
+.code .bar .file { margin-left: 6px; }
+.code pre { margin: 0; padding: 16px 18px 18px; overflow-x: auto; font: 400 13px/1.65 var(--font-mono); tab-size: 4; }
+.kw { color: var(--c-kw); } .ty { color: var(--c-ty); } .str { color: var(--c-str); } .cm { color: var(--c-cm); font-style: italic; } .fn { color: var(--c-fn); }
+
+/* Glance strip */
+.glance { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: var(--sheet); }
+.glance .wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 20px; padding-block: 24px; }
+.glance b { display: block; font: 700 28px/1.1 var(--font-display); letter-spacing: -.01em; }
+.glance span { font-size: 14px; color: var(--muted); }
+
+/* Sections */
+section.block > .wrap { padding-block: 64px; }
+section.block + section.block { border-top: 1px solid var(--rule); }
+.head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 30px; }
+.head h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -.01em; }
+.head p { margin: 0; color: var(--muted); max-width: 54ch; }
+
+/* Experience timeline */
+.roles { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+.role-row { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 8px 32px; padding-block: 26px; border-bottom: 1px solid var(--rule); }
+.role-row .when { font: 500 13px/1.5 var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.role-row .when b { display: block; color: var(--ink); font: 600 15px/1.4 var(--font-display); margin-bottom: 2px; }
+.role-row h3 { font-size: 20px; font-weight: 700; }
+.role-row h3 span { font-weight: 500; color: var(--muted); }
+.role-row ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6px; font-size: 15.5px; max-width: 78ch; }
+.role-row li::marker { color: var(--brass); }
+.role-row li strong { font-weight: 600; }
+.role-row.compact ul { margin-top: 6px; }
+@media (max-width: 680px) { .role-row { grid-template-columns: minmax(0, 1fr); } }
+.edu { margin-top: 22px; font-size: 14.5px; color: var(--muted); }
+.edu b { color: var(--ink); font-weight: 600; }
+
+/* Shipped apps */
+.apps { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.app { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 4px 16px; align-items: start; padding: 18px; background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px; }
+.app .icon { grid-row: 1 / span 3; width: 52px; height: 52px; border-radius: 12px; display: grid; place-items: center; font: 700 20px/1 var(--font-display); color: #fff; }
+.app h3 { font-size: 17px; font-weight: 700; }
+.app .kind { font: 500 11px/1.3 var(--font-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--brass); }
+.app p { margin: 4px 0 0; font-size: 14.5px; color: var(--muted); }
+
+/* Case-study ledger */
+.ledger { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.proj { background: var(--sheet); padding: 26px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.proj .meta { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.proj h3 { font-size: 23px; font-weight: 700; overflow-wrap: anywhere; }
+.proj h3 a { text-decoration: none; }
+.proj dl { margin: 0; display: grid; gap: 10px; font-size: 15px; }
+.proj dt { font: 500 11px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--brass); margin-bottom: 4px; }
+.proj dd { margin: 0; color: var(--muted); }
+.proj dd strong { color: var(--ink); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 8px; }
+.chip { font: 500 11.5px/1 var(--font-mono); padding: 5px 8px; border: 1px solid var(--rule); border-radius: 2px; color: var(--steel); }
+.badge { font: 500 11px/1 var(--font-mono); padding: 5px 8px; background: var(--brass-soft); color: var(--brass); border-radius: 2px; letter-spacing: .04em; white-space: nowrap; }
+.proj.featured { grid-column: 1 / -1; }
+@media (min-width: 820px) {
+  .proj.featured { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px 44px; }
+  .proj.featured > .meta, .proj.featured > h3, .proj.featured > dl, .proj.featured > .chips { grid-column: 1; }
+  .proj.featured > .code { grid-column: 2; grid-row: 1 / span 4; align-self: center; }
+}
+.subhead { margin: 40px 0 16px; }
+
+/* Standards */
+.standards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0; border-top: 1px solid var(--rule); }
+.std { padding: 22px 24px 22px 0; border-bottom: 1px solid var(--rule); min-width: 0; }
+.std h3 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+.std p { margin: 0; font-size: 15px; color: var(--muted); }
+.std .proof { display: block; margin-top: 10px; font: 500 12px/1.4 var(--font-mono); color: var(--steel); }
+
+/* Code tabs */
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+.tabs button { font: 500 13px/1 var(--font-mono); padding: 9px 12px; border: 1px solid var(--rule); background: var(--sheet); color: var(--muted); border-radius: 3px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.tabnote { margin: 12px 0 0; font-size: 14.5px; color: var(--muted); max-width: var(--measure); }
+
+/* MASVS matrix */
+.matrix-scroll { overflow-x: auto; border: 1px solid var(--rule); background: var(--sheet); }
+table.matrix { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+.matrix th, .matrix td { padding: 12px 14px; border-bottom: 1px solid var(--rule); text-align: center; }
+.matrix thead th { font: 500 11px/1.2 var(--font-mono); letter-spacing: .06em; color: var(--muted); }
+.matrix tbody th { text-align: left; font: 600 15px/1.2 var(--font-display); white-space: nowrap; }
+.matrix tbody tr:last-child > * { border-bottom: 0; }
+.matrix td { font: 500 12px/1 var(--font-mono); color: var(--muted); }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--brass); vertical-align: middle; }
+.dot.part { background: transparent; border: 2px solid var(--brass); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 14px; font-size: 13px; color: var(--muted); align-items: center; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Skills */
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 28px; }
+.skills h3 { font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--brass); margin-bottom: 12px; }
+.skills ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 15px; }
+
+/* Contact */
+.contact .wrap { display: grid; gap: 22px; }
+.contact h2 { font-size: clamp(30px, 5vw, 52px); font-weight: 700; letter-spacing: -.02em; max-width: 20ch; }
+.contact p { margin: 0; max-width: var(--measure); color: var(--muted); font-size: 17px; }
+footer { border-top: 1px solid var(--rule); }
+footer .wrap { padding-block: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--muted); }
+footer .mono { font-family: var(--font-mono); }
+
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); padding-block: 40px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero .code { animation: rise .7s cubic-bezier(.2,.8,.2,1) both .1s; }
+  @keyframes rise { from { transform: translateY(14px); opacity: .3; } to { transform: none; opacity: 1; } }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <span class="sig">Deepak Pal</span>
+    <nav aria-label="Sections">
+      <a href="#experience">Experience</a>
+      <a href="#apps">Apps</a>
+      <a href="#work">Open source</a>
+      <a href="#standards">How I build</a>
+      <a href="#code">Code</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <span class="avail">Available immediately · open to relocation</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="label">Senior iOS Engineer · Swift &amp; SwiftUI</span>
+        <h1>Deepak Pal</h1>
+        <p class="role">I build iOS apps that banks trust and users don't notice are secure.</p>
+        <p class="lede">10+ years building native iOS and Flutter apps for banking, fintech and e-commerce products that handle real payments. I own features from architecture and API integration through CI/CD to App Store release, build security in from day one against the OWASP MASVS, and lead and mentor mobile teams.</p>
+        <div class="platforms" aria-label="Apple platforms I ship to">
+          <span>iOS</span><span>iPadOS</span><span>macOS</span><span>watchOS</span><span>tvOS</span><span>visionOS</span>
+        </div>
+        <div class="cta">
+          <a class="btn primary" href="#experience">See my work</a>
+          <a class="btn" href="https://github.com/DeepakPal25" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </div>
+
+      <div class="code" aria-label="Swift code sample from Waypoint">
+        <div class="bar"><i></i><i></i><i></i><span class="file">AppRouter.swift — Waypoint</span></div>
+<pre><code><span class="cm">// Navigation decides before it commits:
+// signed-out users get a login sheet,
+// locked articles redirect to the paywall.</span>
+<span class="kw">let</span> router = <span class="ty">Router</span>&lt;<span class="ty">AppRoute</span>&gt; { route <span class="kw">in</span>
+    <span class="kw">switch</span> route {
+    <span class="kw">case</span> .settings <span class="kw">where</span> !session.isSignedIn:
+        .<span class="fn">present</span>(.login, style: .sheet)
+    <span class="kw">case</span> .article(<span class="kw">let</span> id) <span class="kw">where</span> <span class="ty">Paywall</span>.<span class="fn">isLocked</span>(id):
+        .<span class="fn">redirect</span>(.upgrade)
+    <span class="kw">default</span>:
+        .allow
+    }
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <div class="glance" aria-label="At a glance">
+    <div class="wrap">
+      <div><b>10+ years</b><span>iOS since 2015, Flutter alongside</span></div>
+      <div><b>4.8★</b><span>App Store rating held across 5+ live apps</span></div>
+      <div><b>−40%</b><span>Release turnaround as mobile lead at NPrep</span></div>
+      <div><b>−25%</b><span>App load time, found with Instruments</span></div>
+      <div><b>9 packages</b><span>Open-source Swift &amp; Flutter, MIT</span></div>
+    </div>
+  </div>
+
+  <section class="block" id="experience" aria-labelledby="exp-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="exp-h">Experience</h2>
+        <p>Ten years from junior iOS developer to mobile tech lead, mostly in products that move money.</p>
+      </div>
+      <div class="roles">
+        <div class="role-row">
+          <div class="when"><b>NPrep EdTech</b>Feb 2025 – Jan 2026</div>
+          <div>
+            <h3>Senior Engineer &amp; Mobile Lead <span>· Flutter &amp; iOS</span></h3>
+            <ul>
+              <li>Led the mobile team: mentoring, code review, and cross-team architecture and security standards.</li>
+              <li>Cut release turnaround by <strong>40%</strong> with structured code review, sprint workflows and Fastlane phased rollouts to both stores.</li>
+              <li>Drove <strong>40% sales growth</strong> through a unified CleverTap, Google Analytics and Mixpanel strategy.</li>
+              <li>Architected the app on Clean Architecture with Riverpod and GetX, and built a shared security layer (jailbreak detection, pinning, encrypted storage) to OWASP MASVS.</li>
+              <li>Built deep-link and push-driven navigation connecting marketing campaigns to in-app content.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="role-row">
+          <div class="when"><b>Alchemy Digital</b>Jun 2021 – Nov 2024</div>
+          <div>
+            <h3>Senior iOS Developer</h3>
+            <ul>
+              <li>Kept <strong>4.8+/5 App Store ratings</strong> across 5+ live iOS and Flutter apps with <strong>zero critical post-release defects</strong> over three years.</li>
+              <li>Built the iOS app for <strong>Zolve</strong>, a US banking product: Razorpay and PayU payments, OAuth2/JWT, Keychain credentials, aligned with PCI-DSS.</li>
+              <li>Hardened it to OWASP MASVS (pinning, jailbreak and tamper detection, biometric login) and checked every release against MSTG test cases.</li>
+              <li>Moved mixed Swift, Objective-C and UIKit codebases toward SwiftUI and Combine.</li>
+              <li>Automated signing, tests, TestFlight and store submission with Fastlane and GitHub Actions.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="role-row">
+          <div class="when"><b>Effio Lab</b>Sep 2020 – May 2021</div>
+          <div>
+            <h3>Senior iOS Developer</h3>
+            <ul>
+              <li>Integrated Twilio VoIP (WebRTC) audio and video calling with PushKit, CallKit and background modes.</li>
+              <li>Covered call interruptions and async state transitions with XCTest and XCUITest.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="role-row">
+          <div class="when"><b>AJM Software</b>Apr 2018 – Sep 2020</div>
+          <div>
+            <h3>Senior iOS Developer</h3>
+            <ul>
+              <li>Cut app load time by <strong>25%</strong> through Instruments profiling; held a <strong>4.8/5</strong> rating with 99% bug-free releases.</li>
+              <li>Built real-time GraphQL sync on AWS AppSync subscriptions, and an offline-first Realm layer with conflict resolution.</li>
+              <li>Added SSL pinning, ATS, OAuth2/JWT, Keychain and biometric authentication.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="role-row compact">
+          <div class="when"><b>Earlier</b>Oct 2015 – Feb 2018</div>
+          <div>
+            <h3>iOS Developer <span>· GTS Infotech, SquareBits</span></h3>
+            <ul>
+              <li>Shipped education and business apps in Swift, Objective-C and UIKit, owning the full App Store release cycle.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="edu"><b>MCA</b>, Rajasthan Technical University, 2013 · <b>BCA</b>, JNVU Jodhpur, 2010 · English (fluent), Hindi (native)</p>
+    </div>
+  </section>
+
+  <section class="block" id="apps" aria-labelledby="apps-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="apps-h">Shipped apps</h2>
+        <p>Production apps I built or contributed to, across native iOS and Flutter.</p>
+      </div>
+      <div class="apps">
+        <article class="app"><span class="icon" style="background:#2c4a63" aria-hidden="true">Z</span><span class="kind">US banking · iOS</span><h3>Zolve</h3><p>Core banking features, payment gateways, OAuth2/JWT, Keychain credentials and wallet flows with failure recovery.</p></article>
+        <article class="app"><span class="icon" style="background:#7a4a1c" aria-hidden="true">3W</span><span class="kind">E-commerce · iOS &amp; Flutter</span><h3>Third Wave Coffee Roasters</h3><p>GraphQL (Apollo) catalogue, cart and checkout on both stacks, with a full Fastlane and GitHub Actions pipeline.</p></article>
+        <article class="app"><span class="icon" style="background:#2f7a5b" aria-hidden="true">F</span><span class="kind">Fitness · iOS</span><h3>FitPose</h3><p>On-device exercise pose tracking at 30 fps with Core ML and the Vision framework.</p></article>
+        <article class="app"><span class="icon" style="background:#5b3f7a" aria-hidden="true">M</span><span class="kind">White-label platform</span><h3>MottoMobile</h3><p>One codebase configured and shipped as multiple branded apps.</p></article>
+        <article class="app"><span class="icon" style="background:#8a3a3a" aria-hidden="true">Mq</span><span class="kind">Flutter</span><h3>MemQ</h3><p>Offline-first app that stays fully usable without a connection.</p></article>
+        <article class="app"><span class="icon" style="background:#3a5f8a" aria-hidden="true">K</span><span class="kind">Agriculture · iPad</span><h3>Kverneland Spreading Charts</h3><p>iPad utility for Kverneland's spreading charts, localized into 13 languages.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="work" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="work-h">Open-source packages</h2>
+        <p>Each one started as a problem I hit in production apps. Here's the problem, the design decision, and what it gives a team.</p>
+      </div>
+
+      <div class="ledger">
+        <article class="proj featured">
+          <div class="meta"><span class="label">Security · Swift Package</span><span class="badge">Banking</span></div>
+          <h3><a href="https://github.com/DeepakPal25/SecureBankKit" target="_blank" rel="noopener">SecureBankKit</a></h3>
+          <dl>
+            <div><dt>Problem</dt><dd>Every banking app rebuilds Keychain storage, Face ID, session timeouts and jailbreak checks, and small mistakes become audit findings.</dd></div>
+            <div><dt>Approach</dt><dd>Six focused modules (<strong>Keychain, Biometrics, Session, Security, Utils, Core</strong>) so a team adopts only what it needs, with a SwiftUI demo app.</dd></div>
+            <div><dt>Result</dt><dd>Token storage, biometric app lock on background, inactivity timeout with token refresh, and logging that redacts sensitive data in one dependency.</dd></div>
+          </dl>
+          <div class="chips"><span class="chip">Swift 6</span><span class="chip">iOS 15+</span><span class="chip">LocalAuthentication</span><span class="chip">Keychain Services</span></div>
+          <div class="code" aria-label="SecureBankKit modules">
+            <div class="bar"><i></i><i></i><i></i><span class="file">Package.swift</span></div>
+<pre><code><span class="kw">.package</span>(
+  url: <span class="str">"https://github.com/DeepakPal25/SecureBankKit"</span>,
+  from: <span class="str">"1.0.0"</span>
+)
+
+<span class="cm">// Modules</span>
+<span class="ty">Keychain</span>    <span class="cm">// CRUD + token storage</span>
+<span class="ty">Biometrics</span>  <span class="cm">// Face ID / Touch ID, passcode fallback</span>
+<span class="ty">Session</span>     <span class="cm">// inactivity timeout, token expiry</span>
+<span class="ty">Security</span>    <span class="cm">// app lock, jailbreak detection</span>
+<span class="ty">Utils</span>       <span class="cm">// debug-only, redacted logging</span></code></pre>
+          </div>
+        </article>
+
+        <article class="proj">
+          <div class="meta"><span class="label">SwiftUI navigation</span><span class="badge">CI</span></div>
+          <h3><a href="https://github.com/DeepakPal25/Waypoint" target="_blank" rel="noopener">Waypoint</a></h3>
+          <dl>
+            <div><dt>Problem</dt><dd>NavigationStack apps end up with stringly-typed links, modal state scattered across views, and navigation nobody can unit-test.</dd></div>
+            <div><dt>Approach</dt><dd>Codable route enums, one <strong>@Observable</strong> router per stack and modal, guards that run before navigation commits.</dd></div>
+            <div><dt>Result</dt><dd>Deep links with host allow-listing, nested modals, per-tab stacks and state restoration, all testable without rendering a view.</dd></div>
+          </dl>
+          <div class="chips"><span class="chip">Swift 6</span><span class="chip">iOS 17+</span><span class="chip">visionOS</span><span class="chip">Swift Testing</span></div>
+        </article>
+
+        <article class="proj">
+          <div class="meta"><span class="label">Core Bluetooth</span><span class="badge">v0.5 · CI</span></div>
+          <h3><a href="https://github.com/DeepakPal25/SwiftBLEKit" target="_blank" rel="noopener">SwiftBLEKit</a></h3>
+          <dl>
+            <div><dt>Problem</dt><dd>Bluetooth code is usually tested by hand with a device on the desk, so reconnection bugs reach users.</dd></div>
+            <div><dt>Approach</dt><dd>A protocol boundary over CBCentralManager with a <strong>mock central and simulated peripherals</strong>, and an injectable sleep for deterministic backoff tests.</dd></div>
+            <div><dt>Result</dt><dd>Reconnect with exponential backoff and jitter, a GATT profile DSL, typed heart-rate and battery models, and a priority connection pool.</dd></div>
+          </dl>
+          <div class="chips"><span class="chip">async/await</span><span class="chip">AsyncStream</span><span class="chip">iOS · macOS · watchOS · tvOS</span></div>
+        </article>
+
+        <article class="proj">
+          <div class="meta"><span class="label">HealthKit</span><span class="badge">Healthcare</span></div>
+          <h3><a href="https://github.com/DeepakPal25/HealthSyncKit" target="_blank" rel="noopener">HealthSyncKit</a></h3>
+          <dl>
+            <div><dt>Problem</dt><dd>HealthKit types leak into every layer of a health app and make it hard to test or bridge to other platforms.</dd></div>
+            <div><dt>Approach</dt><dd>Async queries that return <strong>plain domain models</strong>, with analytics in its own layer.</dd></div>
+            <div><dt>Result</dt><dd>Activity, vitals, body, sleep and nutrition data, a 0–100 sleep score, and trend statistics, ready for Flutter or React Native bridges.</dd></div>
+          </dl>
+          <div class="chips"><span class="chip">Swift 6</span><span class="chip">iOS 16+</span><span class="chip">HealthKit</span></div>
+        </article>
+
+        <article class="proj">
+          <div class="meta"><span class="label">UserNotifications</span></div>
+          <h3><a href="https://github.com/DeepakPal25/NotificationKit" target="_blank" rel="noopener">NotificationKit</a></h3>
+          <dl>
+            <div><dt>Problem</dt><dd>UNUserNotificationCenter is callback-based and repetitive to configure correctly.</dd></div>
+            <div><dt>Approach</dt><dd>An async/await, <strong>Sendable</strong> API with a fluent content builder and responses delivered as an AsyncStream.</dd></div>
+            <div><dt>Result</dt><dd>Time, calendar and location triggers, repeating schedules, interactive actions and deep links in a few lines.</dd></div>
+          </dl>
+          <div class="chips"><span class="chip">Swift 6</span><span class="chip">iOS 15+</span><span class="chip">macOS 12+</span></div>
+        </article>
+
+        <article class="proj">
+          <div class="meta"><span class="label">Networking</span><span class="badge">CI</span></div>
+          <h3><a href="https://github.com/DeepakPal25/Courier" target="_blank" rel="noopener">Courier</a></h3>
+          <dl>
+            <div><dt>Problem</dt><dd>Every app hand-writes the same networking layer: retries, token refresh, logging, and mocks for tests.</dd></div>
+            <div><dt>Approach</dt><dd>Typed requests through a <strong>middleware pipeline</strong>, fully Sendable, with zero dependencies.</dd></div>
+            <div><dt>Result</dt><dd>Backoff that honours Retry-After, a single token refresh when many requests hit 401, de-duplicated GETs, redacted logs and a MockTransport for tests.</dd></div>
+          </dl>
+          <div class="chips"><span class="chip">Swift 6</span><span class="chip">iOS 16+</span><span class="chip">visionOS</span></div>
+        </article>
+
+        <article class="proj">
+          <div class="meta"><span class="label">Feature flags</span><span class="badge">Macros</span></div>
+          <h3><a href="https://github.com/DeepakPal25/Switchboard" target="_blank" rel="noopener">Switchboard</a></h3>
+          <dl>
+            <div><dt>Problem</dt><dd>Feature flags keyed by strings break silently, and remote config often isn't ready at launch.</dd></div>
+            <div><dt>Approach</dt><dd>A <strong>@FeatureFlags macro</strong> generates a typed registry; values layer defaults, remote JSON, experiments and QA overrides.</dd></div>
+            <div><dt>Result</dt><dd>Offline-cached config at launch, deterministic A/B/n bucketing, an @Observable store and a SwiftUI debug menu.</dd></div>
+          </dl>
+          <div class="chips"><span class="chip">Swift Macros</span><span class="chip">iOS 17+</span><span class="chip">Swift Testing</span></div>
+        </article>
+
+        <article class="proj">
+          <div class="meta"><span class="label">Analytics</span><span class="badge">Privacy</span></div>
+          <h3><a href="https://github.com/DeepakPal25/Beacon" target="_blank" rel="noopener">Beacon</a></h3>
+          <dl>
+            <div><dt>Problem</dt><dd>Apps send the same event to several analytics vendors, each with its own SDK, queue and consent handling.</dd></div>
+            <div><dt>Approach</dt><dd>Track once; Beacon fans out to each provider through its own queue, with all shared state in <strong>one actor</strong>.</dd></div>
+            <div><dt>Result</dt><dd>A consent gate that purges on withdrawal, PII redaction, offline persistence, batching and per-provider retries.</dd></div>
+          </dl>
+          <div class="chips"><span class="chip">Swift 6 actors</span><span class="chip">iOS 16+</span><span class="chip">GDPR-ready</span></div>
+        </article>
+      </div>
+
+      <h3 class="subhead label">Also cross-platform</h3>
+      <div class="ledger">
+        <article class="proj">
+          <div class="meta"><span class="label">Flutter plugin</span><span class="badge">pub.dev · ★ 3</span></div>
+          <h3><a href="https://github.com/DeepakPal25/flutter_security_suite" target="_blank" rel="noopener">flutter_security_suite</a></h3>
+          <dl>
+            <div><dt>What it does</dt><dd>Root, jailbreak and emulator detection, Frida and debugger checks, SPKI certificate pinning, screenshot protection and AES-256-GCM storage, with native <strong>Swift and Kotlin</strong> under one Dart API. <strong>47 automated tests</strong>; used by fintech and healthcare developers.</dd></div>
+          </dl>
+          <div class="chips"><span class="chip">Dart</span><span class="chip">Swift</span><span class="chip">Kotlin</span><span class="chip">iOS 12+ · Android 6+</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="standards" aria-labelledby="std-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="std-h">How I build</h2>
+        <p>The engineering standards I hold my own code to, with where you can check them.</p>
+      </div>
+      <div class="standards">
+        <div class="std"><h3>Swift 6 concurrency</h3><p>async/await and AsyncStream instead of callbacks, Sendable types and main-actor isolation so data races fail at compile time.</p><span class="proof">→ NotificationKit, SwiftBLEKit</span></div>
+        <div class="std"><h3>Testable by design</h3><p>Protocol boundaries around Apple frameworks and injectable clocks, so hardware and UI flows run as fast unit tests.</p><span class="proof">→ SwiftBLEKit mocks, Waypoint routers</span></div>
+        <div class="std"><h3>Swift Testing &amp; CI</h3><p>Tests written with @Test and #expect, run on every push with GitHub Actions.</p><span class="proof">→ Waypoint, SwiftBLEKit workflows</span></div>
+        <div class="std"><h3>Security first</h3><p>Keychain over UserDefaults, certificate pinning, biometric gates and tamper checks, mapped to OWASP MASVS.</p><span class="proof">→ SecureBankKit, flutter_security_suite</span></div>
+        <div class="std"><h3>Modular packages</h3><p>Features shipped as Swift Package modules with clean public APIs, so apps compile faster and teams own clear boundaries.</p><span class="proof">→ SecureBankKit's six modules</span></div>
+        <div class="std"><h3>Every Apple platform</h3><p>One codebase across iOS, iPadOS, macOS, watchOS, tvOS and visionOS where the framework allows.</p><span class="proof">→ Waypoint, SwiftBLEKit</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="code" aria-labelledby="code-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="code-h">Read the code</h2>
+        <p>Short excerpts from my packages. The full source is on GitHub.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Code samples">
+        <button role="tab" id="t-test" aria-controls="p-test" aria-selected="true">Testing navigation</button>
+        <button role="tab" id="t-link" aria-controls="p-link" aria-selected="false" tabindex="-1">Deep links</button>
+        <button role="tab" id="t-ble" aria-controls="p-ble" aria-selected="false" tabindex="-1">BLE pool</button>
+      </div>
+
+      <div role="tabpanel" id="p-test" aria-labelledby="t-test">
+        <div class="code">
+          <div class="bar"><i></i><i></i><i></i><span class="file">WaypointTests.swift</span></div>
+<pre><code><span class="kw">@Test</span> <span class="kw">@MainActor</span> <span class="kw">func</span> <span class="fn">signedOutUsersSeeLogin</span>() {
+    <span class="kw">let</span> router = <span class="ty">Router</span>&lt;<span class="ty">AppRoute</span>&gt; { $0 == .settings ? .<span class="fn">present</span>(.login, style: .sheet) : .allow }
+
+    router.<span class="fn">push</span>(.settings)
+
+    <span class="kw">#expect</span>(router.path.isEmpty)
+    <span class="kw">#expect</span>(router.sheet?.root == .login)
+}</code></pre>
+        </div>
+        <p class="tabnote">Routers are plain observable objects, so a guard's behaviour is checked in a unit test with no simulator and no view rendering.</p>
+      </div>
+
+      <div role="tabpanel" id="p-link" aria-labelledby="t-link" hidden>
+        <div class="code">
+          <div class="bar"><i></i><i></i><i></i><span class="file">DeepLinks.swift — Waypoint</span></div>
+<pre><code><span class="kw">var</span> links = <span class="ty">Self</span>(schemes: [<span class="str">"myapp"</span>], hosts: [<span class="str">"example.com"</span>, <span class="str">"www.example.com"</span>])
+
+links.<span class="fn">register</span>(<span class="str">"users/:id"</span>) { match <span class="kw">in</span>
+    match[<span class="str">"id"</span>].<span class="fn">map</span> { <span class="ty">NavigationState</span>(path: [.profile(userID: $0)]) }
+}
+links.<span class="fn">register</span>(<span class="str">"articles/:id"</span>) { match <span class="kw">in</span>
+    match.<span class="fn">int</span>(<span class="str">"id"</span>).<span class="fn">map</span> { <span class="ty">NavigationState</span>(path: [.article(id: $0)]) }  <span class="cm">// nil if not a number</span>
+}
+links.<span class="fn">register</span>(<span class="str">"login"</span>) { _ <span class="kw">in</span>
+    <span class="ty">NavigationState</span>(presented: .<span class="kw">init</span>(style: .sheet, root: .login))
+}</code></pre>
+        </div>
+        <p class="tabnote">Universal links and custom schemes resolve to typed navigation state. Unknown hosts are rejected, and malformed IDs return nil instead of crashing.</p>
+      </div>
+
+      <div role="tabpanel" id="p-ble" aria-labelledby="t-ble" hidden>
+        <div class="code">
+          <div class="bar"><i></i><i></i><i></i><span class="file">Sensors.swift — SwiftBLEKit</span></div>
+<pre><code><span class="cm">// Cap concurrent connections; higher-priority
+// peripherals are promoted from the queue first.</span>
+<span class="kw">let</span> pool = <span class="ty">ConnectionPool</span>(central: central, maxConcurrent: 4)
+<span class="kw">await</span> pool.<span class="fn">manage</span>(sensorA, priority: 10)</code></pre>
+        </div>
+        <p class="tabnote">The same pool runs against <code>MockCentralManager</code> in tests, so reconnect and queueing logic is verified without a device.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="masvs" aria-labelledby="masvs-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="masvs-h">Security coverage</h2>
+        <p>Which OWASP MASVS control groups each security package helps an app meet.</p>
+      </div>
+      <div class="matrix-scroll">
+        <table class="matrix">
+          <thead><tr><th scope="col" style="text-align:left">Package</th><th scope="col">STORAGE</th><th scope="col">CRYPTO</th><th scope="col">AUTH</th><th scope="col">NETWORK</th><th scope="col">PLATFORM</th><th scope="col">RESILIENCE</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">SecureBankKit</th>
+              <td><span class="dot" title="Keychain, redacted logs"></span></td><td>—</td>
+              <td><span class="dot" title="Biometrics, sessions, app lock"></span></td><td>—</td>
+              <td><span class="dot part" title="Lock on background"></span></td>
+              <td><span class="dot" title="Jailbreak detection"></span></td></tr>
+            <tr><th scope="row">flutter_security_suite</th>
+              <td><span class="dot" title="Encrypted secure storage"></span></td>
+              <td><span class="dot" title="Encrypted storage"></span></td><td>—</td>
+              <td><span class="dot" title="Certificate pinning"></span></td>
+              <td><span class="dot" title="Screenshot protection"></span></td>
+              <td><span class="dot" title="Root, emulator, Frida checks"></span></td></tr>
+            <tr><th scope="row">Waypoint</th>
+              <td>—</td><td>—</td>
+              <td><span class="dot part" title="Route guards"></span></td><td>—</td>
+              <td><span class="dot part" title="Deep-link host allow-listing"></span></td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="legend">
+        <span><i class="dot" aria-hidden="true"></i> Direct controls</span>
+        <span><i class="dot part" aria-hidden="true"></i> Supporting controls</span>
+        <span>— Not in scope</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="skills" aria-labelledby="skills-h">
+    <div class="wrap">
+      <div class="head"><h2 id="skills-h">Skills</h2></div>
+      <div class="skills">
+        <div><h3>iOS &amp; Swift</h3><ul><li>Swift 6, SwiftUI, UIKit, Objective-C</li><li>async/await, actors, TaskGroup, AsyncStream</li><li>Combine, GCD, Sendable &amp; MainActor</li><li>UIKit–SwiftUI interop, Auto Layout, HIG</li></ul></div>
+        <div><h3>Apple frameworks</h3><ul><li>Core Data, URLSession, Codable</li><li>Core ML, Vision, AVFoundation</li><li>PushKit, CallKit, BackgroundTasks</li><li>Core Bluetooth, CoreNFC, HealthKit, MapKit</li></ul></div>
+        <div><h3>Architecture</h3><ul><li>Clean Architecture, MVVM, VIPER</li><li>Repository pattern, dependency injection</li><li>Modular, feature-based packages</li><li>Offline-first sync (Realm, Core Data)</li></ul></div>
+        <div><h3>Security &amp; payments</h3><ul><li>OWASP MASVS / MSTG, Mobile Top 10</li><li>Pinning, Keychain, Secure Enclave</li><li>Jailbreak, tamper &amp; anti-debug checks</li><li>OAuth2/JWT, Razorpay, PayU, PCI-DSS</li></ul></div>
+        <div><h3>Data &amp; APIs</h3><ul><li>REST, GraphQL, Apollo iOS</li><li>AWS AppSync, Firebase</li><li>Realm, SQLite</li><li>APNs, FCM, universal links</li></ul></div>
+        <div><h3>Testing &amp; delivery</h3><ul><li>Swift Testing, XCTest, XCUITest, TDD</li><li>Instruments profiling</li><li>Fastlane, GitHub Actions, Xcode Cloud</li><li>TestFlight, App Store Connect, SPM, CocoaPods</li></ul></div>
+        <div><h3>Flutter</h3><ul><li>Dart 3, Riverpod, GetX, BLoC</li><li>MethodChannel bridges to Swift &amp; Kotlin</li><li>Widget, golden &amp; integration tests</li><li>Play Store release</li></ul></div>
+        <div><h3>Ways of working</h3><ul><li>Tech lead, mentoring, code review</li><li>Agile / Scrum, Jira, Azure DevOps</li><li>Product, design &amp; backend collaboration</li><li>Analytics: CleverTap, Mixpanel, Crashlytics</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block contact" id="contact" aria-labelledby="contact-h">
+    <div class="wrap">
+      <span class="label">Hiring for iOS?</span>
+      <h2 id="contact-h">Let's talk about your app's next release.</h2>
+      <p>I'm looking for senior iOS or mobile lead roles in fintech, banking or any product where security and reliability matter. Based in Jodhpur, India, available immediately and open to relocation.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://www.linkedin.com/in/pal-deepak-jnv" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://github.com/DeepakPal25" target="_blank" rel="noopener">GitHub</a>
+        <button class="btn" type="button" id="copy-email" data-email="deepaksitapal@gmail.com">deepaksitapal@gmail.com · Copy</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Deepak Pal</span>
+    <span class="mono">Swift · SwiftUI · MIT-licensed packages</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var cb = document.getElementById('copy-email');
+  if (cb) cb.addEventListener('click', function () {
+    var email = cb.getAttribute('data-email');
+    var done = function () { cb.textContent = email + ' · Copied'; };
+    try {
+      navigator.clipboard.writeText(email).then(done, function () { cb.textContent = email; });
+    } catch (e) { cb.textContent = email; }
+  });
+})();
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  function select(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { select(t); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        select(n); n.focus(); e.preventDefault();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
